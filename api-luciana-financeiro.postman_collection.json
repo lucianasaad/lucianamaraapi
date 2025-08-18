@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "88865dc2-69b4-42b8-bc28-afb5d3bbc703",
+		"name": "api-luciana-financeiro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47401951"
+	},
+	"item": [
+		{
+			"name": "financeiro",
+			"item": [
+				{
+					"name": "obterTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obterPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 1500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-10\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "alterar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche alterado\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-30\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/financeiros/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"financeiros",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "baixar",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/financeiros/4/baixar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"financeiros",
+						"4",
+						"baixar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

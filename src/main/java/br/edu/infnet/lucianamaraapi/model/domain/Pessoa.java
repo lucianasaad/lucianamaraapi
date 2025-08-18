@@ -89,8 +89,8 @@ public abstract class Pessoa {
 
 	public void setTipoPessoa(TipoPessoa tipoPessoa) {
 		//if (tipoPessoa == null) {
-	//		throw new IllegalArgumentException("Tipo Pessoa não pode ser nulo");
-//		}
+		//	throw new IllegalArgumentException("Tipo Pessoa não pode ser nulo");
+	//	}
 		this.tipoPessoa = tipoPessoa;
 	}
 

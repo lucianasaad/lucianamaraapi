@@ -44,5 +44,7 @@ public class FinanceiroController {
 	@GetMapping(value = "/{id}")
 	public Financeiro buscarPorId(@PathVariable Integer id) {
 		return financeiroService.buscarPorId(id);
-	}	
+	}
+
+
 }

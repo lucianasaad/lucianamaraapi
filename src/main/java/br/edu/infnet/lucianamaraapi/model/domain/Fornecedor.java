@@ -7,6 +7,7 @@ public class Fornecedor extends Pessoa {
 	private String categoria;          // Ex: Energia, Telecom, Serviços
 	private String site;
 	private String contatoResponsavel;
+	private double saldoDevedor;
 
 	@Override
 	public String toString() {
@@ -39,4 +40,13 @@ public class Fornecedor extends Pessoa {
 
 	public void setContatoResponsavel(String contatoResponsavel) {
 		this.contatoResponsavel = contatoResponsavel;
-	}}
+	}
+
+	public double getSaldoDevedor() {
+		return saldoDevedor;
+	}
+
+	public void setSaldoDevedor(double saldoDevedor) {
+		this.saldoDevedor = saldoDevedor;
+	}
+}

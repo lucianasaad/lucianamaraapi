@@ -1,6 +1,8 @@
 package br.edu.infnet.lucianamaraapi.model.service;
 
 import br.edu.infnet.lucianamaraapi.model.domain.Financeiro;
+import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
+import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.FinanceiroInvalidoException;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.FinanceiroNaoEncontradoException;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class FinanceiroService implements CrudService<Financeiro, Integer> {
 
 	private final Map<Integer, Financeiro> mapa = new ConcurrentHashMap<Integer, Financeiro>();
 	private final AtomicInteger nextId = new AtomicInteger(1);
-	
+
 	private void validar(Financeiro financeiro) {
 		if(financeiro == null) {
 			throw new IllegalArgumentException("O Financeiro não pode estar nulo!");
@@ -39,7 +41,17 @@ public class FinanceiroService implements CrudService<Financeiro, Integer> {
 		financeiro.setId(nextId.getAndIncrement());
 		
 		mapa.put(financeiro.getId(), financeiro);
-		
+
+		// Atualizar saldo a receber do cliente automaticamente
+		/*if (financeiro.getPessoaRelacionada() instanceof Cliente cliente) {
+			double valor = financeiro.getValor();
+			double saldoAtual = cliente.getSaldoReceber() != 0 ? cliente.getSaldoReceber() : 0.0;
+			cliente.setSaldoReceber(saldoAtual + (valor));
+
+			ClienteService clienteService = new ClienteService();
+			clienteService.alterar(cliente.getId(), cliente);
+		}*/
+
 		return financeiro;
 	}
 

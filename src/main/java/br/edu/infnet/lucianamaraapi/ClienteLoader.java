@@ -1,0 +1,40 @@
+package br.edu.infnet.lucianamaraapi;
+
+import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
+import br.edu.infnet.lucianamaraapi.model.domain.Endereco;
+import br.edu.infnet.lucianamaraapi.model.domain.Pessoa;
+import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
+@Component
+public class ClienteLoader extends PessoaLoader<Cliente> {
+
+	public ClienteLoader(ClienteService clienteService) {
+		super("clientes.txt",
+				campos -> {
+					Cliente cliente = new Cliente();
+//					cliente.setId(Integer.parseInt(campos[0]));
+					cliente.setNome(campos[1]);
+					cliente.setTipoPessoa(Pessoa.TipoPessoa.fromCodigo(campos[2]));
+					cliente.setDocumento(campos[3]);
+					cliente.setEmail(campos[4]);
+					cliente.setTelefone(campos[5]);
+					cliente.setMediaAtraso(Integer.parseInt(campos[6]));
+					cliente.setSaldoReceber(Double.parseDouble(campos[7]));
+					cliente.setDataProxVencimento(LocalDate.parse(campos[8]));
+					cliente.setAtivo(Boolean.parseBoolean(campos[9]));
+					Endereco end = new Endereco();
+					end.setLogradouro(campos[10]);
+					end.setNumero(Integer.valueOf(campos[11]));
+					end.setLocalidade(campos[12]);
+					end.setUf(campos[13]);
+					end.setCep(campos[14]);
+					cliente.setEnderecoCobranca(end);
+					return cliente;
+				},
+				clienteService::incluir);
+	}
+}
+

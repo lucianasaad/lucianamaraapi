@@ -115,60 +115,700 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche alterado\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-30\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "baixar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros/4/baixar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros",
+								"4",
+								"baixar"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "alterar",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche alterado\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-30\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "cliente",
+			"item": [
+				{
+					"name": "obterTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/financeiros/4",
-					"protocol": "http",
-					"host": [
-						"localhost"
+				{
+					"name": "obterPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"port": "8080",
-					"path": [
-						"api",
-						"financeiros",
-						"4"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"Novo cliente\",\r\n    \"tipoPessoa\": \"F\",\r\n    \"documento\": \"12345678901\",\r\n    \"email\": \"joao@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 1500.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": false,\r\n    \"enderecoCobranca\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"Novo cliente alterado\",\r\n    \"tipoPessoa\": \"F\",\r\n    \"documento\": \"12345678901\",\r\n    \"email\": \"joao@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 1500.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": false,\r\n    \"enderecoCobranca\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inativar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/2/inativar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"2",
+								"inativar"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "baixar",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/financeiros/4/baixar",
-					"protocol": "http",
-					"host": [
-						"localhost"
+			"name": "fornecedor",
+			"item": [
+				{
+					"name": "obterTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obterPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"port": "8080",
-					"path": [
-						"api",
-						"financeiros",
-						"4",
-						"baixar"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"nome\": \"Novo Fornecedor\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"contato@energia.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Teste\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Jose\",\r\n    \"saldoDevedor\": 0.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"nome\": \"Novo Fornecedor alterado\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"contato@energia.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Teste\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Jose\",\r\n    \"saldoDevedor\": 0.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizaSaldoDevedor",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores/2/atualizarsaldodevedor?valor=150.0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores",
+								"2",
+								"atualizarsaldodevedor"
+							],
+							"query": [
+								{
+									"key": "valor",
+									"value": "150.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarFinanceirosFornecedorPorCategoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/fornecedores/2/financeiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fornecedores",
+								"2",
+								"financeiros"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "empresa",
+			"item": [
+				{
+					"name": "obterTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/empresas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obterPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/empresas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/empresas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/empresas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao - alterado\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/empresas/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "endereco",
+			"item": [
+				{
+					"name": "obterTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/enderecos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"enderecos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obterPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/enderecos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"enderecos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cep\": \"38408266\",\r\n    \"logradouro\": \"Rua Teste Inclusao endereco\",\r\n    \"numero\": 100,\r\n    \"complemento\": \"Apto 101\",\r\n    \"unidade\": \"Unidade X\",\r\n    \"bairro\": \"Bairro Y\",\r\n    \"localidade\": \"Uberlandia\",\r\n    \"uf\": \"MG\",\r\n    \"estado\": \"Minas Gerais\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/enderecos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"enderecos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/enderecos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"enderecos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cep\": \"38408266\",\r\n    \"logradouro\": \"Rua Teste Inclusao endereco alterado\",\r\n    \"numero\": 100,\r\n    \"complemento\": \"Apto 101\",\r\n    \"unidade\": \"Unidade X\",\r\n    \"bairro\": \"Bairro Y\",\r\n    \"localidade\": \"Uberlandia\",\r\n    \"uf\": \"MG\",\r\n    \"estado\": \"Minas Gerais\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/enderecos/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"enderecos",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -1,0 +1,2 @@
+12345000;Rua A;100;Apto 101;Unidade X;Bairro Y;Cidade Z;SP;São Paulo
+23456000;Rua B;200;;Unidade Y;Bairro W;Cidade X;RJ;Rio de Janeiro

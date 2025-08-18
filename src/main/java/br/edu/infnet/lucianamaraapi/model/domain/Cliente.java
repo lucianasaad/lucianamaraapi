@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Cliente extends Pessoa {
 
 	private int mediaAtraso;
-	private double saldoDevedor;
+	private double saldoReceber;
 	private LocalDate dataProxVencimento;
 	private boolean ativo;
 	private Endereco enderecoCobranca;
@@ -14,7 +14,7 @@ public class Cliente extends Pessoa {
 	public String toString() {
 
 		return String.format("%s - %d - %.2f - %s - %s - %s",
-				super.toString(), mediaAtraso, saldoDevedor, dataProxVencimento, ativo ? "ativo" : "inativo", enderecoCobranca);
+				super.toString(), mediaAtraso, saldoReceber, dataProxVencimento, ativo ? "ativo" : "inativo", enderecoCobranca);
 	}
 
 	@Override
@@ -30,12 +30,12 @@ public class Cliente extends Pessoa {
 		this.mediaAtraso = mediaAtraso;
 	}
 
-	public double getSaldoDevedor() {
-		return saldoDevedor;
+	public double getSaldoReceber() {
+		return saldoReceber;
 	}
 
-	public void setSaldoDevedor(double saldoDevedor) {
-		this.saldoDevedor = saldoDevedor;
+	public void setSaldoReceber(double saldoReceber) {
+		this.saldoReceber = saldoReceber;
 	}
 
 	public LocalDate getDataProxVencimento() {
@@ -46,7 +46,6 @@ public class Cliente extends Pessoa {
 		this.dataProxVencimento = dataProxVencimento;
 	}
 
-
 	public Endereco getEnderecoCobranca() {
 		return enderecoCobranca;
 	}
@@ -54,4 +53,13 @@ public class Cliente extends Pessoa {
 	public void setEnderecoCobranca(Endereco enderecoCobranca) {
 		this.enderecoCobranca = enderecoCobranca;
 	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
 }

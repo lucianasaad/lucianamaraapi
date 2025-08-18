@@ -1,0 +1,57 @@
+package br.edu.infnet.lucianamaraapi.model.domain;
+
+import java.time.LocalDate;
+
+public class Cliente extends Pessoa {
+
+	private int mediaAtraso;
+	private double saldoDevedor;
+	private LocalDate dataProxVencimento;
+	private boolean ativo;
+	private Endereco enderecoCobranca;
+
+	@Override
+	public String toString() {
+
+		return String.format("%s - %d - %.2f - %s - %s - %s",
+				super.toString(), mediaAtraso, saldoDevedor, dataProxVencimento, ativo ? "ativo" : "inativo", enderecoCobranca);
+	}
+
+	@Override
+	public String obterTipo() {
+		return "Cliente";
+	}
+
+	public int getMediaAtraso() {
+		return mediaAtraso;
+	}
+
+	public void setMediaAtraso(int mediaAtraso) {
+		this.mediaAtraso = mediaAtraso;
+	}
+
+	public double getSaldoDevedor() {
+		return saldoDevedor;
+	}
+
+	public void setSaldoDevedor(double saldoDevedor) {
+		this.saldoDevedor = saldoDevedor;
+	}
+
+	public LocalDate getDataProxVencimento() {
+		return dataProxVencimento;
+	}
+
+	public void setDataProxVencimento(LocalDate dataProxVencimento) {
+		this.dataProxVencimento = dataProxVencimento;
+	}
+
+
+	public Endereco getEnderecoCobranca() {
+		return enderecoCobranca;
+	}
+
+	public void setEnderecoCobranca(Endereco enderecoCobranca) {
+		this.enderecoCobranca = enderecoCobranca;
+	}
+}

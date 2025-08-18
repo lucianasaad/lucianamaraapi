@@ -1,0 +1,3 @@
+1;Empresa 1;Auxilio Educação;10;Cliente 10;1;1500.00;2025-08-01;2025-08-10;;A
+1;Empresa 1; Aluguel;20;Fornecedor 20;-1;500.00;2025-08-02;2025-08-12;2025-08-11;B
+1;Empresa 1;Salario;15;Cliente 15;1;2500.50;2025-08-05;2025-08-15;;A

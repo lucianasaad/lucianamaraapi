@@ -6,6 +6,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import jakarta.persistence.*;
+//import jakarta.validation.constraints.Email;
+//import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.Pattern;
+//import jakarta.validation.constraints.Size;
+
+
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,
@@ -17,14 +24,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@JsonSubTypes.Type(value = Empresa.class, name = "Empresa")
 })
 
+@MappedSuperclass
 public abstract class Pessoa {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String nome;
 	private TipoPessoa tipoPessoa;
 	private String documento; // CPF ou CNPJ
 	private String email;
 	private String telefone;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "endereco_id")
+//	@Valid
 	private Endereco endereco;
 
 	public enum TipoPessoa {

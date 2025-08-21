@@ -73,7 +73,9 @@ public class ClienteController {
 		Cliente cliente = clienteService.buscarPorId(id);
 
 		List<Financeiro> financeirosDoCliente = financeiroService.listarTodos().stream()
-				.filter(financeiro -> financeiro.getPessoaRelacionada() instanceof Cliente clienteFin && clienteFin.getId().equals(id))
+				.filter(financeiro ->
+						financeiro.getCliente() != null && financeiro.getCliente().getId().equals(id)
+				)
 				.collect(Collectors.toList());
 
 		return new ClienteFinanceiroDTO(

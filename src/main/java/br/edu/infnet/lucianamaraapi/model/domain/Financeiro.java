@@ -1,13 +1,27 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
 public class Financeiro {
 
+	@Id
 	private Integer id;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "empresa_id")
 	private Empresa empresa;
 	private String natureza;
-	private Pessoa pessoaRelacionada;   // Cliente ou Fornecedor
+
+	@ManyToOne
+	@JoinColumn(name = "cliente_id", nullable = true)
+	private Cliente cliente;
+
+	@ManyToOne
+	@JoinColumn(name = "fornecedor_id", nullable = true)
+	private Fornecedor fornecedor;
 
 	private TipoFinanceiro tipoFinanceiro;
 	private double valor;
@@ -82,12 +96,19 @@ public class Financeiro {
 
 	@Override
 	public String toString() {
+		String nomePessoa;
+		if (tipoFinanceiro == TipoFinanceiro.RECEBER) {
+			nomePessoa = cliente != null ? cliente.getNome() : "N/A";
+		} else {
+			nomePessoa = fornecedor != null ? fornecedor.getNome() : "N/A";
+		}
+
 		return String.format(
 				"Financeiro[id=%d, empresa=%s, natureza=%s, pessoaRelacionada=%s, tipoFinanceiro=%s, valor=%.2f, dataLancamento=%s, dataVencimento=%s, dataBaixa=%s, status=%s]",
 				id,
 				empresa != null ? empresa.getNome() : "N/A",
 				natureza != null ? natureza : "N/A",
-				pessoaRelacionada != null ? pessoaRelacionada.getNome() : "N/A",
+				nomePessoa,
 				tipoFinanceiro != null ? tipoFinanceiro.name() : "N/A",
 				valor,
 				dataLancamento != null ? dataLancamento.toString() : "N/A",
@@ -123,12 +144,20 @@ public class Financeiro {
 		this.natureza = natureza;
 	}
 
-	public Pessoa getPessoaRelacionada() {
-		return pessoaRelacionada;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setPessoaRelacionada(Pessoa pessoaRelacionada) {
-		this.pessoaRelacionada = pessoaRelacionada;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Fornecedor getfornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	public TipoFinanceiro getTipoFinanceiro() {

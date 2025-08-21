@@ -20,32 +20,43 @@ public class EnderecoLoader implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		FileReader arquivo = new FileReader("enderecos.txt");
-		BufferedReader leitura = new BufferedReader(arquivo);
 
-		String linha = leitura.readLine();
+		try (BufferedReader leitura = new BufferedReader(new FileReader("enderecos.txt"))) {
 
-		while (linha != null) {
-			String[] campos = linha.split(";");
+			System.out.println("[EnderecoLoader] Iniciando carregamento de endereços ...");
 
-			Endereco endereco = new Endereco();
-			endereco.setCep(campos[0]);
-			endereco.setLogradouro(campos[1]);
-			endereco.setNumero(Integer.parseInt(campos[2]));
-			endereco.setComplemento(campos[3]);
-			endereco.setUnidade(campos[4]);
-			endereco.setBairro(campos[5]);
-			endereco.setLocalidade(campos[6]);
-			endereco.setUf(campos[7]);
-			endereco.setEstado(campos[8]);
+			String linha = leitura.readLine();
 
-			enderecoService.incluir(endereco);
+			while (linha != null) {
+				String[] campos = linha.split(";");
 
-			System.out.println(endereco);
+				Endereco endereco = new Endereco();
+				endereco.setCep(campos[0]);
+				endereco.setLogradouro(campos[1]);
+				endereco.setNumero(Integer.parseInt(campos[2]));
+				endereco.setComplemento(campos[3]);
+				endereco.setUnidade(campos[4]);
+				endereco.setBairro(campos[5]);
+				endereco.setLocalidade(campos[6]);
+				endereco.setUf(campos[7]);
+				endereco.setEstado(campos[8]);
 
-			linha = leitura.readLine();
+				try {
+					enderecoService.incluir(endereco);
+					System.out.println("  [OK] Endereço " + endereco.getLogradouro() + " incluído com sucesso.");
+				} catch (Exception e) {
+					System.err.println("  [ERRO] Problema na inclusão do endereço " + endereco.getLogradouro() + ": " + e.getMessage());
+				}
+
+				linha = leitura.readLine();
+			}
+
+			System.out.println("[EnderecoLoader] Carregamento concluído.");
+			System.out.println("--- Endereços Carregados ---");
+			enderecoService.listarTodos().forEach(System.out::println);
+			System.out.println("---------------------------");
+
+			leitura	.close();
 		}
-
-		leitura.close();
 	}
 }

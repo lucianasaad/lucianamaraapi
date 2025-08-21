@@ -1,13 +1,19 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
 public class Cliente extends Pessoa {
 
 	private int mediaAtraso;
 	private double saldoReceber;
 	private LocalDate dataProxVencimento;
 	private boolean ativo;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "endereco_cobranca_id")
 	private Endereco enderecoCobranca;
 
 	@Override

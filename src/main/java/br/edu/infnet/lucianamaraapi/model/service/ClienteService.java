@@ -3,19 +3,22 @@ package br.edu.infnet.lucianamaraapi.model.service;
 import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.ClienteInvalidoException;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.ClienteNaoEncontradoException;
+import br.edu.infnet.lucianamaraapi.model.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ClienteService implements CrudService<Cliente, Integer> {
 
-	private final Map<Integer, Cliente> mapa = new ConcurrentHashMap<>();
-	private final AtomicInteger nextId = new AtomicInteger(1);
+	private final ClienteRepository clienteRepository;
+
+	public ClienteService(ClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
+	}
 
 	private void validar(Cliente cliente) {
 		if (cliente == null) {
@@ -28,6 +31,7 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 	}
 
 	@Override
+	@Transactional
 	public Cliente incluir(Cliente cliente) {
 
 		validar(cliente);
@@ -36,13 +40,11 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 			throw new IllegalArgumentException("Um novo Cliente não pode ter um ID na inclusão!");
 		}
 
-		cliente.setId(nextId.getAndIncrement());
-		mapa.put(cliente.getId(), cliente);
-
-		return cliente;
+		return clienteRepository.save(cliente);
 	}
 
 	@Override
+	@Transactional
 	public Cliente alterar(Integer id, Cliente cliente) {
 
 		if (id == null || id == 0) {
@@ -53,38 +55,30 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 		buscarPorId(id);
 
 		cliente.setId(id);
-		mapa.put(cliente.getId(), cliente);
 
-		return cliente;
+		return clienteRepository.save(cliente);
 	}
 
 	@Override
+	@Transactional
 	public void excluir(Integer id) {
-		if (id == null || id == 0) {
-			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo/zero!");
-		}
-
-		if (!mapa.containsKey(id)) {
-			throw new ClienteNaoEncontradoException("O Cliente com ID " + id + " não foi encontrado!");
-		}
-
-		mapa.remove(id);
+		Cliente cliente = buscarPorId(id);
+		clienteRepository.delete(cliente);
 	}
 
 	@Override
 	public List<Cliente> listarTodos() {
-		return new ArrayList<>(mapa.values());
+		return clienteRepository.findAll();
 	}
 
 	@Override
 	public Cliente buscarPorId(Integer id) {
-		Cliente cliente = mapa.get(id);
 
-		if (cliente == null) {
-			throw new ClienteNaoEncontradoException("Cliente ID " + id + " não encontrado!");
+		if (id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo/zero!");
 		}
 
-		return cliente;
+		return clienteRepository.findById(id).orElseThrow(() -> new ClienteNaoEncontradoException("O Cliente com ID " + id + " não foi encontrado!"));
 	}
 
 	public Cliente inativar(Integer id) {
@@ -101,18 +95,19 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 		}
 
 		cliente.setAtivo(false);
+		return clienteRepository.save(cliente);
 
-		mapa.put(cliente.getId(), cliente);
-
-		return cliente;
 	}
 
 	public Cliente atualizarSaldoReceber(Cliente cliente, double valor) {
 
+		if (cliente == null) {
+			throw new IllegalArgumentException("O cliente não pode ser nulo!");
+		}
+
 		double saldoAtual = cliente.getSaldoReceber() != 0 ? cliente.getSaldoReceber() : 0.0;
 		cliente.setSaldoReceber(saldoAtual + (valor));
-		alterar(cliente.getId(), cliente);
-		return cliente;
+		return clienteRepository.save(cliente);
 	}
 
 }

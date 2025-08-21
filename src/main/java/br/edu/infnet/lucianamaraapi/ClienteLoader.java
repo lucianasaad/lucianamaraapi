@@ -12,10 +12,10 @@ import java.time.LocalDate;
 public class ClienteLoader extends PessoaLoader<Cliente> {
 
 	public ClienteLoader(ClienteService clienteService) {
-		super("clientes.txt",
-				campos -> {
+		super(
+				"clientes.txt", // arquivo
+				campos -> { // conversor
 					Cliente cliente = new Cliente();
-//					cliente.setId(Integer.parseInt(campos[0]));
 					cliente.setNome(campos[1]);
 					cliente.setTipoPessoa(Pessoa.TipoPessoa.fromCodigo(campos[2]));
 					cliente.setDocumento(campos[3]);
@@ -25,6 +25,7 @@ public class ClienteLoader extends PessoaLoader<Cliente> {
 					cliente.setSaldoReceber(Double.parseDouble(campos[7]));
 					cliente.setDataProxVencimento(LocalDate.parse(campos[8]));
 					cliente.setAtivo(Boolean.parseBoolean(campos[9]));
+
 					Endereco end = new Endereco();
 					end.setLogradouro(campos[10]);
 					end.setNumero(Integer.valueOf(campos[11]));
@@ -32,9 +33,25 @@ public class ClienteLoader extends PessoaLoader<Cliente> {
 					end.setUf(campos[13]);
 					end.setCep(campos[14]);
 					cliente.setEnderecoCobranca(end);
+
 					return cliente;
 				},
-				clienteService::incluir);
+				cliente -> { // serviceInserir
+					try {
+						clienteService.incluir(cliente);
+						System.out.println("  [OK] Cliente " + cliente.getNome() + " incluído com sucesso.");
+					} catch (Exception e) {
+						System.err.println("[ERRO] Problema na inclusão do cliente: "
+								+ cliente.getNome() + ": " + e.getMessage());
+					}
+				},
+				() -> System.out.println("[ClienteLoader] Iniciando carregamento de clientes..."), // preCarregamento
+				clientes -> { // posCarregamento
+					System.out.println("[ClienteLoader] Carregamento concluído.");
+					System.out.println("--- Clientes Carregados ---");
+					clientes.forEach(System.out::println);
+					System.out.println("---------------------------");
+				}
+		);
 	}
 }
-

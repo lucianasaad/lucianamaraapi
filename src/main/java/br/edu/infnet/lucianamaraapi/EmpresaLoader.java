@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 public class EmpresaLoader extends PessoaLoader<Empresa> {
 
 	public EmpresaLoader(EmpresaService empresaService) {
-		super("empresas.txt",
-				campos -> {
+		super(
+				"empresas.txt", // arquivo
+				campos -> { // conversor
 					Empresa e = new Empresa();
-					//e.setId(Integer.parseInt(campos[0]));
 					e.setNome(campos[1]);
 					e.setRazaoSocial(campos[2]);
 					e.setNomeFantasia(campos[3]);
@@ -22,7 +22,7 @@ public class EmpresaLoader extends PessoaLoader<Empresa> {
 					e.setDocumento(campos[5]);
 					e.setEmail(campos[6]);
 					e.setTelefone(campos[7]);
-					// Monta endereço
+
 					Endereco end = new Endereco();
 					end.setLogradouro(campos[8]);
 					end.setNumero(Integer.valueOf(campos[9]));
@@ -31,8 +31,25 @@ public class EmpresaLoader extends PessoaLoader<Empresa> {
 					end.setEstado(campos[12]);
 					end.setCep(campos[13]);
 					e.setEndereco(end);
+
 					return e;
 				},
-				empresaService::incluir);
+				empresa -> { // serviceInserir com try/catch
+					try {
+						empresaService.incluir(empresa);
+						System.out.println("[OK] Empresa " + empresa.getNome() + " incluída com sucesso.");
+					} catch (Exception ex) {
+						System.err.println("[ERRO] Problema na inclusão da empresa: "
+								+ empresa.getNome() + " -> " + ex.getMessage());
+					}
+				},
+				() -> System.out.println("[EmpresaLoader] Iniciando carregamento de empresas..."), // preCarregamento
+				empresas -> { // posCarregamento
+					System.out.println("[EmpresaLoader] Carregamento concluído.");
+					System.out.println("--- Empresas Carregadas ---");
+					empresas.forEach(System.out::println);
+					System.out.println("---------------------------");
+				}
+		);
 	}
 }

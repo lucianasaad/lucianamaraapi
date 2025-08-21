@@ -68,8 +68,7 @@ public class FornecedorController {
 
 		List<Financeiro> financeirosDoFornecedor = financeiroService.listarTodos().stream()
 				.filter(financeiro ->
-						financeiro.getPessoaRelacionada() instanceof Fornecedor fornecedorRelacionado
-								&& fornecedorRelacionado.getId().equals(id)
+						financeiro.getfornecedor() != null && financeiro.getfornecedor().getId().equals(id)
 				)
 				.collect(Collectors.toList());
 
@@ -88,8 +87,7 @@ public class FornecedorController {
 
 		List<Financeiro> financeirosDoFornecedor = financeiroService.listarTodos().stream()
 				.filter(financeiro ->
-						financeiro.getPessoaRelacionada() instanceof Fornecedor fornecedorRelacionado
-								&& fornecedorRelacionado.getId().equals(id)
+						financeiro.getfornecedor() != null && financeiro.getfornecedor().getId().equals(id)
 				)
 				.collect(Collectors.toList());
 

@@ -1,7 +1,10 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDate;
 
+@Entity
 public class Fornecedor extends Pessoa {
 
 	private String categoria;          // Ex: Energia, Telecom, Serviços

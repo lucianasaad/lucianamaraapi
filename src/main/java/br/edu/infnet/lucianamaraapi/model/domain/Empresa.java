@@ -1,7 +1,10 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDate;
 
+@Entity
 public class Empresa extends Pessoa {
 
 	private String razaoSocial;

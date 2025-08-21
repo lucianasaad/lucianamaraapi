@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Component
 public class FinanceiroLoader implements ApplicationRunner {
@@ -25,62 +24,65 @@ public class FinanceiroLoader implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		
+
 		FileReader arquivo = new FileReader("financeiro.txt");
 		BufferedReader leitura = new BufferedReader(arquivo);
-		
+
+		System.out.println("[FinanceiroLoader] Iniciando carregamento de financeiros ...");
+
 		String linha = leitura.readLine();
 
-		String[] campos = null;
-		
-		while(linha != null) {
-			
-			campos = linha.split(";");
+		while (linha != null) {
+
+			String[] campos = linha.split(";");
 
 			Financeiro financeiro = new Financeiro();
 
 			Empresa empresa = new Empresa();
 			empresa.setId(Integer.valueOf(campos[0]));
 			empresa.setNome(campos[1]);
-		
-			if (Integer.valueOf(campos[5]) < 0) {
-				Fornecedor fornecedor = new Fornecedor();
-				fornecedor.setId(Integer.valueOf(campos[3]));
-				fornecedor.setNome(campos[4]);
-				financeiro.setPessoaRelacionada(fornecedor);
-
-			} else {
-				Cliente cliente = new Cliente();
-				cliente.setId(Integer.valueOf(campos[3]));
-				cliente.setNome(campos[4]);
-				financeiro.setPessoaRelacionada(cliente);
-			}
-
 			financeiro.setEmpresa(empresa);
+
 			financeiro.setNatureza(campos[2]);
 			financeiro.setTipoFinanceiro(Financeiro.TipoFinanceiro.fromCodigo(Integer.parseInt(campos[5])));
 			financeiro.setValor(Double.valueOf(campos[6]));
 			financeiro.setDataLancamento(LocalDate.parse(campos[7]));
 			financeiro.setDataVencimento(LocalDate.parse(campos[8]));
+
+			if (Integer.parseInt(campos[5]) < 0) { // Pagamento: Fornecedor
+				Fornecedor fornecedor = new Fornecedor();
+				fornecedor.setId(Integer.valueOf(campos[3]));
+				fornecedor.setNome(campos[4]);
+				financeiro.setFornecedor(fornecedor);
+			} else { // Recebimento: Cliente
+				Cliente cliente = new Cliente();
+				cliente.setId(Integer.valueOf(campos[3]));
+				cliente.setNome(campos[4]);
+				financeiro.setCliente(cliente);
+			}
+
 			if (campos[9] != null && !campos[9].isEmpty()) {
 				financeiro.setDataBaixa(LocalDate.parse(campos[9]));
-			} else {
-				financeiro.setDataBaixa(null);
 			}
+
 			financeiro.setStatus(Financeiro.StatusFinanceiro.fromCodigo(campos[10].charAt(0)));
 
-			financeiroService.incluir(financeiro);
+			try {
+				financeiroService.incluir(financeiro);
+				System.out.println("  [OK] Financeiro " + financeiro.getNatureza() + " incluído com sucesso.");
+			} catch (Exception e) {
+				System.err.println("  [ERRO] Problema na inclusão do financeiro " + financeiro.getNatureza() + ": " + e.getMessage());
+			}
 
-			//TODO Listar Financeiros após a leitura do arquivo
-			System.out.println(financeiro);
-			
 			linha = leitura.readLine();
 		}
-		
-		//TODO chamada da funcionalidade de alteração
-		
-		System.out.println("- " + financeiroService.listarTodos().size());
+
+		System.out.println("[FinanceiroLoader] Carregamento concluído.");
+		System.out.println("--- Financeiros Carregados ---");
+		financeiroService.listarTodos().forEach(System.out::println);
+		System.out.println("-----------------------------");
 
 		leitura.close();
+
 	}
 }

@@ -2,6 +2,8 @@ package br.edu.infnet.lucianamaraapi.controller;
 
 import br.edu.infnet.lucianamaraapi.model.domain.Empresa;
 import br.edu.infnet.lucianamaraapi.model.service.EmpresaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +19,35 @@ public class EmpresaController {
 	}
 
 	@PostMapping
-	public Empresa incluir(@RequestBody Empresa empresa) {
-		return empresaService.incluir(empresa);
+	public ResponseEntity<Empresa> incluir(@RequestBody Empresa empresa) {
+		Empresa nova = empresaService.incluir(empresa);
+		return ResponseEntity.status(HttpStatus.CREATED).body(nova);
 	}
 
-	@PutMapping(value = "/{id}")
-	public Empresa alterar(@PathVariable Integer id, @RequestBody Empresa empresa) {
-		return empresaService.alterar(id, empresa);
+	@PutMapping("/{id}")
+	public ResponseEntity<Empresa> alterar(@PathVariable Integer id, @RequestBody Empresa empresa) {
+		Empresa alterada = empresaService.alterar(id, empresa);
+		return ResponseEntity.ok(alterada);
 	}
 
-	@DeleteMapping(value = "/{id}")
-	public void excluir(@PathVariable Integer id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Integer id) {
 		empresaService.excluir(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping
-	public List<Empresa> listarTodos(){
-		return empresaService.listarTodos();
+	public ResponseEntity<List<Empresa>> listarTodos() {
+		List<Empresa> lista = empresaService.listarTodos();
+		if (lista.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(lista);
 	}
 
-	@GetMapping(value = "/{id}")
-	public Empresa buscarPorId(@PathVariable Integer id) {
-		return empresaService.buscarPorId(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<Empresa> buscarPorId(@PathVariable Integer id) {
+		Empresa empresa = empresaService.buscarPorId(id);
+		return ResponseEntity.ok(empresa);
 	}
 }

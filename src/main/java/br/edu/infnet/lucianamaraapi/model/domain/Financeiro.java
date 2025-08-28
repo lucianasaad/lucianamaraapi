@@ -8,11 +8,13 @@ import java.time.LocalDate;
 public class Financeiro {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "empresa_id")
+	@ManyToOne(fetch = FetchType.EAGER) // muitos financeiros para uma empresa
+	@JoinColumn(name = "empresa_id", nullable = false)
 	private Empresa empresa;
+
 	private String natureza;
 
 	@ManyToOne
@@ -96,26 +98,24 @@ public class Financeiro {
 
 	@Override
 	public String toString() {
-		String nomePessoa;
-		if (tipoFinanceiro == TipoFinanceiro.RECEBER) {
-			nomePessoa = cliente != null ? cliente.getNome() : "N/A";
-		} else {
-			nomePessoa = fornecedor != null ? fornecedor.getNome() : "N/A";
-		}
 
-		return String.format(
-				"Financeiro[id=%d, empresa=%s, natureza=%s, pessoaRelacionada=%s, tipoFinanceiro=%s, valor=%.2f, dataLancamento=%s, dataVencimento=%s, dataBaixa=%s, status=%s]",
-				id,
-				empresa != null ? empresa.getNome() : "N/A",
-				natureza != null ? natureza : "N/A",
-				nomePessoa,
-				tipoFinanceiro != null ? tipoFinanceiro.name() : "N/A",
-				valor,
-				dataLancamento != null ? dataLancamento.toString() : "N/A",
-				dataVencimento != null ? dataVencimento.toString() : "N/A",
-				dataBaixa != null ? dataBaixa.toString() : "N/A",
-				status != null ? status.name() : "N/A"
-		);
+		String empresa_id = (empresa != null && empresa.getId() != null) ? empresa.getId().toString() : "N/A";
+		String nomeCliente = (cliente != null && cliente.getId() != null) ? cliente.getNome().toString() : "N/A";
+		String nomeFornecedor = (fornecedor != null && fornecedor.getId() != null) ? fornecedor.getNome().toString() : "N/A";
+
+		return "Financeiro{" +
+					"id=" + id +
+					", empresa='" + empresa_id + '\'' +
+					", natureza='" + (natureza != null ? natureza : "N/A") + '\'' +
+					", cliente='" + nomeCliente + '\'' +
+					", fornecedor='" + nomeFornecedor + '\'' +
+					", tipoFinanceiro=" + (tipoFinanceiro != null ? tipoFinanceiro.name() : "N/A") +
+					", valor=" + valor +
+					", dataLancamento=" + (dataLancamento != null ? dataLancamento : "N/A") +
+					", dataVencimento=" + (dataVencimento != null ? dataVencimento : "N/A") +
+					", dataBaixa=" + (dataBaixa != null ? dataBaixa : "N/A") +
+					", status=" + (status != null ? status.name() : "N/A") +
+					'}';
 	}
 
 	// Getters e setters
@@ -152,7 +152,7 @@ public class Financeiro {
 		this.cliente = cliente;
 	}
 
-	public Fornecedor getfornecedor() {
+	public Fornecedor getFornecedor() {
 		return fornecedor;
 	}
 

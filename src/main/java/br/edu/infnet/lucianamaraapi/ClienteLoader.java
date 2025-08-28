@@ -4,11 +4,13 @@ import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
 import br.edu.infnet.lucianamaraapi.model.domain.Endereco;
 import br.edu.infnet.lucianamaraapi.model.domain.Pessoa;
 import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
+@Order(1)
 public class ClienteLoader extends PessoaLoader<Cliente> {
 
 	public ClienteLoader(ClienteService clienteService) {
@@ -17,7 +19,7 @@ public class ClienteLoader extends PessoaLoader<Cliente> {
 				campos -> { // conversor
 					Cliente cliente = new Cliente();
 					cliente.setNome(campos[1]);
-					cliente.setTipoPessoa(Pessoa.TipoPessoa.fromCodigo(campos[2]));
+					cliente.setTipoPessoa(Pessoa.TipoPessoa.valueOf(campos[2].trim().toUpperCase()));
 					cliente.setDocumento(campos[3]);
 					cliente.setEmail(campos[4]);
 					cliente.setTelefone(campos[5]);

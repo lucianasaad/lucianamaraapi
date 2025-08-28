@@ -11,6 +11,54 @@
 			"item": [
 				{
 					"name": "obterTodos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Empresa Nome</th>\r",
+									"        <th>Natureza</th>\r",
+									"        <th>Cliente Nome</th>\r",
+									"        <th>Valor</th>\r",
+									"        <th>Status</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{empresa.nome}}</td>\r",
+									"            <td>{{natureza}}</td>\r",
+									"            <td>{{cliente.nome}}</td>\r",
+									"            <td>{{valor}}</td>\r",
+									"            <td>{{status}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -31,11 +79,57 @@
 				},
 				{
 					"name": "obterPorId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Empresa Nome</th>\r",
+									"        <th>Cliente Nome</th>\r",
+									"        <th>Tipo Financeiro</th>\r",
+									"        <th>Valor</th>\r",
+									"        <th>Status</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    <tr>\r",
+									"        <td>{{response.id}}</td>\r",
+									"        <td>{{response.empresa.nome}}</td>\r",
+									"        <td>{{response.cliente.nome}}</td>\r",
+									"        <td>{{response.tipoFinanceiro}}</td>\r",
+									"        <td>{{response.valor}}</td>\r",
+									"        <td>{{response.status}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() };\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/financeiros/1",
+							"raw": "http://localhost:8080/api/financeiros/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -44,7 +138,7 @@
 							"path": [
 								"api",
 								"financeiros",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -57,7 +151,39 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Empresa Nome</th>\r",
+									"        <th>Cliente Nome</th>\r",
+									"        <th>Valor</th>\r",
+									"        <th>Status</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    <tr>\r",
+									"        <td>{{response.id}}</td>\r",
+									"        <td>{{response.empresa.nome}}</td>\r",
+									"        <td>{{response.cliente.nome}}</td>\r",
+									"        <td>{{response.valor}}</td>\r",
+									"        <td>{{response.status}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() };\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -69,7 +195,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 1500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-10\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
+							"raw": "{\r\n     \"empresa\": {\r\n        \"tipoClasse\": \"Empresa\",\r\n        \"id\": 1,\r\n        \"nome\": \"Empresa 1\",\r\n        \"tipoPessoa\": \"JURIDICA\",\r\n        \"documento\": \"11111111111\",\r\n        \"email\": \"contato@empresa1.com\",\r\n        \"telefone\": \"11999999999\",\r\n        \"endereco\": {\r\n            \"id\": 1,\r\n            \"cep\": \"01001-000\",\r\n            \"logradouro\": \"Rua A\",\r\n            \"numero\": 100,\r\n            \"complemento\": null,\r\n            \"bairro\": \"Centro\",\r\n            \"localidade\": \"SÃ£o Paulo\",\r\n            \"uf\": \"SP\",\r\n            \"estado\": \"SÃ£o Paulo\"\r\n        },\r\n        \"razaoSocial\": \"Empresa 1 Ltda\",\r\n        \"nomeFantasia\": \"Emp 1\"\r\n    },\r\n    \"natureza\": \"Compra Material Escritorio alterado 2\",\r\n    \"cliente\": null,\r\n    \"fornecedor\": {\r\n        \"tipoClasse\": \"Fornecedor\",\r\n        \"id\": 2,\r\n        \"nome\": \"Fornecedor EscritÃ³rio\",\r\n        \"tipoPessoa\": \"JURIDICA\",\r\n        \"documento\": \"11111178000199\",\r\n        \"email\": \"fornecescritorio@email.com\",\r\n        \"telefone\": \"11977777777\",\r\n        \"endereco\": {\r\n            \"id\": 10,\r\n            \"cep\": \"01003000\",\r\n            \"logradouro\": \"Rua C\",\r\n            \"numero\": 300,\r\n            \"complemento\": null,\r\n            \"bairro\": null,\r\n            \"localidade\": \"SÃ£o Paulo\",\r\n            \"uf\": \"SP\",\r\n            \"estado\": null\r\n        },\r\n        \"categoria\": \"ServiÃ§os\",\r\n        \"site\": \"www.escritorio.com\",\r\n        \"contatoResponsavel\": \"JoÃ£o Jose\",\r\n        \"saldoDevedor\": 12320.0\r\n    },\r\n    \"tipoFinanceiro\": \"PAGAR\",\r\n    \"valor\": 320.0,\r\n    \"dataLancamento\": \"2025-08-04\",\r\n    \"dataVencimento\": \"2025-08-12\",\r\n    \"dataBaixa\": null,\r\n    \"status\": \"ABERTO\",\r\n    \"pagamento\": true,\r\n    \"aberto\": true,\r\n    \"baixado\": false,\r\n    \"recebimento\": false,\r\n    \"financeiroEmAberto\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,12 +222,8 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/financeiros/1",
+							"raw": "http://localhost:8080/api/financeiros/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -110,7 +232,7 @@
 							"path": [
 								"api",
 								"financeiros",
-								"1"
+								"6"
 							]
 						}
 					},
@@ -118,12 +240,56 @@
 				},
 				{
 					"name": "alterar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Empresa Nome</th>\r",
+									"        <th>Cliente Nome</th>\r",
+									"        <th>Valor</th>\r",
+									"        <th>Status</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    <tr>\r",
+									"        <td>{{response.id}}</td>\r",
+									"        <td>{{response.empresa.nome}}</td>\r",
+									"        <td>{{response.cliente.nome}}</td>\r",
+									"        <td>{{response.valor}}</td>\r",
+									"        <td>{{response.status}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"empresa\": {\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"id\": 1,\r\n    \"nome\": \"Empresa 1\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"razaoSocial\": null,\r\n    \"nomeFantasia\": null\r\n  },\r\n  \"natureza\": \"Auxilio Creche alterado\",\r\n  \"pessoaRelacionada\": {\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"id\": 11,\r\n    \"nome\": \"Cliente 11\",\r\n    \"tipoPessoa\": null,\r\n    \"documento\": null,\r\n    \"email\": null,\r\n    \"telefone\": null,\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 0,\r\n    \"saldoDevedor\": 0.0,\r\n    \"dataProxVencimento\": null,\r\n    \"enderecoCobranca\": null\r\n  },\r\n  \"tipoFinanceiro\": \"RECEBER\",\r\n  \"valor\": 500.0,\r\n  \"dataLancamento\": \"2025-08-01\",\r\n  \"dataVencimento\": \"2025-08-30\",\r\n  \"dataBaixa\": null,\r\n  \"status\": \"ABERTO\",\r\n  \"financeiroEmAberto\": true,\r\n  \"aberto\": true,\r\n  \"baixado\": false,\r\n  \"recebimento\": true,\r\n  \"pagamento\": false\r\n}",
+							"raw": "{\r\n    \"id\": 4,\r\n    \"empresa\": {\r\n        \"tipoClasse\": \"Empresa\",\r\n        \"id\": 1,\r\n        \"nome\": \"Empresa 1\",\r\n        \"tipoPessoa\": \"JURIDICA\",\r\n        \"documento\": \"11111111111\",\r\n        \"email\": \"contato@empresa1.com\",\r\n        \"telefone\": \"11999999999\",\r\n        \"endereco\": {\r\n            \"id\": 1,\r\n            \"cep\": \"01001-000\",\r\n            \"logradouro\": \"Rua A\",\r\n            \"numero\": 100,\r\n            \"complemento\": null,\r\n            \"bairro\": \"Centro\",\r\n            \"localidade\": \"SÃ£o Paulo\",\r\n            \"uf\": \"SP\",\r\n            \"estado\": \"SÃ£o Paulo\"\r\n        },\r\n        \"razaoSocial\": \"Empresa 1 Ltda\",\r\n        \"nomeFantasia\": \"Emp 1\"\r\n    },\r\n    \"natureza\": \"Compra Material Escritorio alterado\",\r\n    \"cliente\": null,\r\n    \"fornecedor\": {\r\n        \"tipoClasse\": \"Fornecedor\",\r\n        \"id\": 2,\r\n        \"nome\": \"Fornecedor EscritÃ³rio\",\r\n        \"tipoPessoa\": \"JURIDICA\",\r\n        \"documento\": \"11111178000199\",\r\n        \"email\": \"fornecescritorio@email.com\",\r\n        \"telefone\": \"11977777777\",\r\n        \"endereco\": {\r\n            \"id\": 10,\r\n            \"cep\": \"01003000\",\r\n            \"logradouro\": \"Rua C\",\r\n            \"numero\": 300,\r\n            \"complemento\": null,\r\n            \"bairro\": null,\r\n            \"localidade\": \"SÃ£o Paulo\",\r\n            \"uf\": \"SP\",\r\n            \"estado\": null\r\n        },\r\n        \"categoria\": \"ServiÃ§os\",\r\n        \"site\": \"www.escritorio.com\",\r\n        \"contatoResponsavel\": \"JoÃ£o Jose\",\r\n        \"saldoDevedor\": 12320.0\r\n    },\r\n    \"tipoFinanceiro\": \"PAGAR\",\r\n    \"valor\": 320.0,\r\n    \"dataLancamento\": \"2025-08-04\",\r\n    \"dataVencimento\": \"2025-08-12\",\r\n    \"dataBaixa\": null,\r\n    \"status\": \"ABERTO\",\r\n    \"pagamento\": true,\r\n    \"aberto\": true,\r\n    \"baixado\": false,\r\n    \"recebimento\": false,\r\n    \"financeiroEmAberto\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,7 +318,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/financeiros/4/baixar",
+							"raw": "http://localhost:8080/api/financeiros/1/baixar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -161,8 +327,95 @@
 							"path": [
 								"api",
 								"financeiros",
-								"4",
+								"1",
 								"baixar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscaFinanceiroPorVencimento",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Nome</th>\r",
+									"        <th>Tipo Pessoa</th>\r",
+									"        <th>Documento</th>\r",
+									"        <th>Email</th>\r",
+									"        <th>Telefone</th>\r",
+									"        <th>Ativo</th>\r",
+									"        <th>CEP</th>\r",
+									"        <th>Logradouro</th>\r",
+									"        <th>Número</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{nome}}</td>\r",
+									"            <td>{{tipoPessoa}}</td>\r",
+									"            <td>{{documento}}</td>\r",
+									"            <td>{{email}}</td>\r",
+									"            <td>{{telefone}}</td>\r",
+									"            <td>{{ativo}}</td>\r",
+									"            <td>{{enderecoCobranca.cep}}</td>\r",
+									"            <td>{{enderecoCobranca.logradouro}}</td>\r",
+									"            <td>{{enderecoCobranca.numero}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/financeiros/vencimento?inicio=2025-08-15&fim=2025-08-15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"financeiros",
+								"vencimento"
+							],
+							"query": [
+								{
+									"key": "inicio",
+									"value": "2025-08-15"
+								},
+								{
+									"key": "fim",
+									"value": "2025-08-15"
+								}
 							]
 						}
 					},
@@ -215,6 +468,89 @@
 					"response": []
 				},
 				{
+					"name": "buscaClientePorNome",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Nome</th>\r",
+									"        <th>Tipo Pessoa</th>\r",
+									"        <th>Documento</th>\r",
+									"        <th>Email</th>\r",
+									"        <th>Telefone</th>\r",
+									"        <th>Ativo</th>\r",
+									"        <th>CEP</th>\r",
+									"        <th>Logradouro</th>\r",
+									"        <th>Número</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{nome}}</td>\r",
+									"            <td>{{tipoPessoa}}</td>\r",
+									"            <td>{{documento}}</td>\r",
+									"            <td>{{email}}</td>\r",
+									"            <td>{{telefone}}</td>\r",
+									"            <td>{{ativo}}</td>\r",
+									"            <td>{{enderecoCobranca.cep}}</td>\r",
+									"            <td>{{enderecoCobranca.logradouro}}</td>\r",
+									"            <td>{{enderecoCobranca.numero}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/buscarPorNome?nome=luciana",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"buscarPorNome"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "luciana"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "incluir",
 					"event": [
 						{
@@ -233,7 +569,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"Novo cliente\",\r\n    \"tipoPessoa\": \"F\",\r\n    \"documento\": \"12345678901\",\r\n    \"email\": \"joao@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 1500.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": false,\r\n    \"enderecoCobranca\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    }\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"NOVO CLIENTE\",\r\n    \"tipoPessoa\": \"JURIDICA\",\r\n    \"documento\": \"1199918587687\",\r\n    \"email\": \"cliente1@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 3000.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": true,\r\n    \"enderecoCobranca\": {\r\n        \"id\": 3,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -287,7 +623,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"Novo cliente alterado\",\r\n    \"tipoPessoa\": \"F\",\r\n    \"documento\": \"12345678901\",\r\n    \"email\": \"joao@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 1500.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": false,\r\n    \"enderecoCobranca\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    }\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Cliente\",\r\n    \"nome\": \"Cliente 1 ALTERADO\",\r\n    \"tipoPessoa\": \"FISICA\",\r\n    \"documento\": \"99918587687\",\r\n    \"email\": \"cliente1@email.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": null,\r\n    \"mediaAtraso\": 5,\r\n    \"saldoReceber\": 3000.75,\r\n    \"dataProxVencimento\": \"2025-09-10\",\r\n    \"ativo\": true,\r\n    \"enderecoCobranca\": {\r\n        \"cep\": \"38408266\",\r\n        \"logradouro\": \"Rua Teste Inclusao endereco alterado\",\r\n        \"numero\": 100,\r\n        \"complemento\": \"Apto 101\",\r\n        \"bairro\": \"Bairro Y\",\r\n        \"localidade\": \"Uberlandia\",\r\n        \"uf\": \"MG\",\r\n        \"estado\": \"Minas Gerais\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -397,7 +733,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"nome\": \"Novo Fornecedor\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"contato@energia.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Teste\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Jose\",\r\n    \"saldoDevedor\": 0.0\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"nome\": \"Novo Fornecedor\",\r\n    \"tipoPessoa\": \"JURIDICA\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"contato@energia.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Teste\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Jose\",\r\n    \"saldoDevedor\": 0.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -426,10 +762,10 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"valor\": 80.0,\r\n    \"status\": \"A\"\r\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/fornecedores/1",
+							"raw": "http://localhost:8080/api/fornecedores/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -438,7 +774,7 @@
 							"path": [
 								"api",
 								"fornecedores",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -451,7 +787,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"nome\": \"Novo Fornecedor alterado\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"contato@energia.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Teste\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Jose\",\r\n    \"saldoDevedor\": 0.0\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Fornecedor\",\r\n    \"id\": 1,\r\n    \"nome\": \"Energia Ltda\",\r\n    \"tipoPessoa\": \"JURIDICA\",\r\n    \"documento\": \"12345678000199\",\r\n    \"email\": \"energia@email.com\",\r\n    \"telefone\": \"11988888888\",\r\n    \"endereco\": {\r\n        \"id\": 9,\r\n        \"cep\": \"01002000\",\r\n        \"logradouro\": \"Rua B\",\r\n        \"numero\": 200,\r\n        \"complemento\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": null\r\n    },\r\n    \"categoria\": \"Energia\",\r\n    \"site\": \"www.energia.com\",\r\n    \"contatoResponsavel\": \"Carlos Silva\",\r\n    \"saldoDevedor\": 820.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -459,7 +795,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/fornecedores/3",
+							"raw": "http://localhost:8080/api/fornecedores/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -468,7 +804,7 @@
 							"path": [
 								"api",
 								"fornecedores",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -589,7 +925,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao\",\r\n    \"tipoPessoa\": \"JURIDICA\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -643,7 +979,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao - alterado\",\r\n    \"tipoPessoa\": \"J\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
+							"raw": "{\r\n    \"tipoClasse\": \"Empresa\",\r\n    \"nome\": \"Empresa Teste Inclusao - alterado\",\r\n    \"tipoPessoa\": \"JURIDICA\",\r\n    \"documento\": \"2222222222222299\",\r\n    \"email\": \"contato@empresateste.com\",\r\n    \"telefone\": \"11999999999\",\r\n    \"endereco\": {\r\n        \"id\": null,\r\n        \"cep\": \"01001000\",\r\n        \"logradouro\": \"Rua A\",\r\n        \"numero\": 100,\r\n        \"complemento\": null,\r\n        \"unidade\": null,\r\n        \"bairro\": null,\r\n        \"localidade\": \"SÃ£o Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"estado\": \"SÃ£o Paulo\"\r\n    },\r\n    \"razaoSocial\": \"Empresa Teste Inclusao Ltda\",\r\n    \"nomeFantasia\": \"Emp Teste Inclusao\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

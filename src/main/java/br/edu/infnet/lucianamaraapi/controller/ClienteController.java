@@ -1,13 +1,27 @@
 package br.edu.infnet.lucianamaraapi.controller;
 
-import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
-import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
-import org.springframework.web.bind.annotation.*;
 import br.edu.infnet.lucianamaraapi.dto.ClienteFinanceiroDTO;
+import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
 import br.edu.infnet.lucianamaraapi.model.domain.Financeiro;
+import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
 import br.edu.infnet.lucianamaraapi.model.service.FinanceiroService;
-import java.util.stream.Collectors;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -22,54 +36,62 @@ public class ClienteController {
 	}
 
 	@PostMapping
-	public Cliente incluir(@RequestBody Cliente cliente) {
-		return clienteService.incluir(cliente);
+	public ResponseEntity<Cliente> incluir(@Valid @RequestBody Cliente cliente) {
+		Cliente novo = clienteService.incluir(cliente);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novo);
 	}
 
 	@PutMapping("/{id}")
-	public Cliente alterar(@PathVariable Integer id, @RequestBody Cliente cliente) {
-		return clienteService.alterar(id, cliente);
+	public ResponseEntity<Cliente> alterar(@PathVariable Integer id, @RequestBody Cliente cliente) {
+		Cliente alterado = clienteService.alterar(id, cliente);
+		return ResponseEntity.ok(alterado);
 	}
 
 	@DeleteMapping("/{id}")
-	public void excluir(@PathVariable Integer id) {
+	public ResponseEntity<Void> excluir(@PathVariable Integer id) {
 		clienteService.excluir(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping
-	public List<Cliente> listarTodos() {
-		return clienteService.listarTodos();
+	public ResponseEntity<List<Cliente>> listarTodos() {
+		List<Cliente> lista = clienteService.listarTodos();
+		if (lista.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(lista);
 	}
 
 	@GetMapping("/{id}")
-	public Cliente buscarPorId(@PathVariable Integer id) {
-		return clienteService.buscarPorId(id);
+	public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id) {
+		Cliente cliente = clienteService.buscarPorId(id);
+		return ResponseEntity.ok(cliente);
 	}
 
-	// Novo endpoint para inativar cliente
 	@PatchMapping("/{id}/inativar")
-	public Cliente inativar(@PathVariable Integer id) {
+	public ResponseEntity<Cliente> inativar(@PathVariable Integer id) {
 		Cliente cliente = clienteService.buscarPorId(id);
 		cliente.setAtivo(false);
-		return clienteService.alterar(id, cliente);
+		Cliente atualizado = clienteService.alterar(id, cliente);
+		return ResponseEntity.ok(atualizado);
 	}
 
 	@PatchMapping("/{id}/atualizarsaldoreceber")
-	public Cliente atualizarSaldo(@PathVariable Integer id,
-								  @RequestParam double valor) {
+	public ResponseEntity<Cliente> atualizarSaldo(@PathVariable Integer id,
+												  @RequestParam double valor) {
 		Cliente cliente = clienteService.buscarPorId(id);
-		return clienteService.atualizarSaldoReceber(cliente, valor);
+		Cliente atualizado = clienteService.atualizarSaldoReceber(cliente, valor);
+		return ResponseEntity.ok(atualizado);
 	}
 
-	// Retorna apenas o saldo a receber do cliente
 	@GetMapping("/{id}/saldo")
-	public double consultarSaldo(@PathVariable Integer id) {
+	public ResponseEntity<Double> consultarSaldo(@PathVariable Integer id) {
 		Cliente cliente = clienteService.buscarPorId(id);
-		return cliente.getSaldoReceber();
+		return ResponseEntity.ok(cliente.getSaldoReceber());
 	}
 
 	@GetMapping("/{id}/financeiros")
-	public ClienteFinanceiroDTO consultarFinanceirosCliente(@PathVariable Integer id) {
+	public ResponseEntity<ClienteFinanceiroDTO> consultarFinanceirosCliente(@PathVariable Integer id) {
 		Cliente cliente = clienteService.buscarPorId(id);
 
 		List<Financeiro> financeirosDoCliente = financeiroService.listarTodos().stream()
@@ -78,11 +100,23 @@ public class ClienteController {
 				)
 				.collect(Collectors.toList());
 
-		return new ClienteFinanceiroDTO(
+		ClienteFinanceiroDTO dto = new ClienteFinanceiroDTO(
 				cliente.getId(),
 				cliente.getNome(),
 				cliente.getSaldoReceber(),
 				financeirosDoCliente
 		);
+		return ResponseEntity.ok(dto);
+	}
+
+	@GetMapping("/buscarPorNome")
+	public ResponseEntity<Collection<Cliente>> buscarPorNome(@RequestParam String nome) {
+		List<Cliente> clientes = clienteService.buscarPorNome(nome);
+
+		if (clientes.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+
+		return ResponseEntity.ok(clientes);
 	}
 }

@@ -8,8 +8,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ClienteService implements CrudService<Cliente, Integer> {
@@ -81,6 +79,7 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 		return clienteRepository.findById(id).orElseThrow(() -> new ClienteNaoEncontradoException("O Cliente com ID " + id + " não foi encontrado!"));
 	}
 
+	@Transactional
 	public Cliente inativar(Integer id) {
 
 		if(id == null || id == 0) {
@@ -99,6 +98,7 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 
 	}
 
+	@Transactional
 	public Cliente atualizarSaldoReceber(Cliente cliente, double valor) {
 
 		if (cliente == null) {
@@ -110,4 +110,14 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 		return clienteRepository.save(cliente);
 	}
 
+	@Transactional
+	public Cliente buscarPorDocumento(String documento) {
+		return clienteRepository.findByDocumento(documento)
+				.orElseThrow(() -> new ClienteNaoEncontradoException("Cliente com documento " + documento + " não encontrado!"));
+	}
+
+	@Transactional
+	public List<Cliente> buscarPorNome(String nome) {
+		return clienteRepository.findByNomeContainingIgnoreCase(nome);
+	}
 }

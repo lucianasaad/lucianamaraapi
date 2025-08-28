@@ -1,87 +1,50 @@
 package br.edu.infnet.lucianamaraapi.model.service;
 
 import br.edu.infnet.lucianamaraapi.model.domain.Endereco;
-import br.edu.infnet.lucianamaraapi.model.domain.exceptions.EnderecoInvalidoException;
-import br.edu.infnet.lucianamaraapi.model.domain.exceptions.EnderecoNaoEncontradoException;
+import br.edu.infnet.lucianamaraapi.model.repository.EnderecoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class EnderecoService implements CrudService<Endereco, Integer> {
 
-	private final Map<Integer, Endereco> mapa = new ConcurrentHashMap<>();
-	private final AtomicInteger nextId = new AtomicInteger(1);
+	private final EnderecoRepository enderecoRepository;
 
-	private void validar(Endereco endereco) {
-		if (endereco == null) {
-			throw new IllegalArgumentException("O endereço não pode estar nulo!");
-		}
-
-		if (endereco.getCep() == null || endereco.getCep().trim().isEmpty()) {
-			throw new EnderecoInvalidoException("O CEP do endereço deve ser informado!");
-		}
+	public EnderecoService(EnderecoRepository enderecoRepository) {
+		this.enderecoRepository = enderecoRepository;
 	}
 
 	@Override
+	@Transactional
 	public Endereco incluir(Endereco endereco) {
-		validar(endereco);
-
-		if (endereco.getId() != null && endereco.getId() != 0) {
-			throw new IllegalArgumentException("Um novo endereço não pode ter ID na inclusão!");
-		}
-
-		endereco.setId(nextId.getAndIncrement());
-		mapa.put(endereco.getId(), endereco);
-
-		return endereco;
+		return enderecoRepository.save(endereco);
 	}
 
 	@Override
+	@Transactional
 	public Endereco alterar(Integer id, Endereco endereco) {
-		if (id == null || id == 0) {
-			throw new IllegalArgumentException("O ID para alteração não pode ser nulo/zero!");
-		}
-
-		validar(endereco);
 		buscarPorId(id);
-
 		endereco.setId(id);
-		mapa.put(endereco.getId(), endereco);
-
-		return endereco;
+		return enderecoRepository.save(endereco);
 	}
 
 	@Override
+	@Transactional
 	public void excluir(Integer id) {
-		if (id == null || id == 0) {
-			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo/zero!");
-		}
-
-		if (!mapa.containsKey(id)) {
-			throw new EnderecoNaoEncontradoException("O Endereço com ID " + id + " não foi encontrado!");
-		}
-
-		mapa.remove(id);
+		Endereco endereco = buscarPorId(id);
+		enderecoRepository.delete(endereco);
 	}
 
 	@Override
 	public List<Endereco> listarTodos() {
-		return new ArrayList<>(mapa.values());
+		return enderecoRepository.findAll();
 	}
 
 	@Override
 	public Endereco buscarPorId(Integer id) {
-		Endereco endereco = mapa.get(id);
-
-		if (endereco == null) {
-			throw new EnderecoNaoEncontradoException("Endereço ID " + id + " não encontrado!");
-		}
-
-		return endereco;
+		return enderecoRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Endereço com ID " + id + " não encontrado!"));
 	}
 }

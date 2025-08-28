@@ -1,38 +1,40 @@
 package br.edu.infnet.lucianamaraapi;
 
-import br.edu.infnet.lucianamaraapi.PessoaLoader;
 import br.edu.infnet.lucianamaraapi.model.domain.Empresa;
 import br.edu.infnet.lucianamaraapi.model.domain.Endereco;
 import br.edu.infnet.lucianamaraapi.model.domain.Pessoa;
 import br.edu.infnet.lucianamaraapi.model.service.EmpresaService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(0)
 public class EmpresaLoader extends PessoaLoader<Empresa> {
 
 	public EmpresaLoader(EmpresaService empresaService) {
 		super(
 				"empresas.txt", // arquivo
 				campos -> { // conversor
-					Empresa e = new Empresa();
-					e.setNome(campos[1]);
-					e.setRazaoSocial(campos[2]);
-					e.setNomeFantasia(campos[3]);
-					e.setTipoPessoa(Pessoa.TipoPessoa.fromCodigo(campos[4]));
-					e.setDocumento(campos[5]);
-					e.setEmail(campos[6]);
-					e.setTelefone(campos[7]);
+					Empresa empresa = new Empresa();
+					empresa.setNome(campos[1]);
+					empresa.setRazaoSocial(campos[2]);
+					empresa.setNomeFantasia(campos[3]);
+					empresa.setTipoPessoa(Pessoa.TipoPessoa.valueOf(campos[4].trim().toUpperCase()));
+					empresa.setDocumento(campos[5]);
+					empresa.setEmail(campos[6]);
+					empresa.setTelefone(campos[7]);
 
 					Endereco end = new Endereco();
 					end.setLogradouro(campos[8]);
 					end.setNumero(Integer.valueOf(campos[9]));
-					end.setLocalidade(campos[10]);
-					end.setUf(campos[11]);
-					end.setEstado(campos[12]);
-					end.setCep(campos[13]);
-					e.setEndereco(end);
+					end.setBairro(campos[10]);
+					end.setLocalidade(campos[11]);
+					end.setUf(campos[12]);
+					end.setEstado(campos[13]);
+					end.setCep(campos[14]);
+					empresa.setEndereco(end);
 
-					return e;
+					return empresa;
 				},
 				empresa -> { // serviceInserir com try/catch
 					try {

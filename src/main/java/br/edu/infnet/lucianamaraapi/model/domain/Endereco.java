@@ -12,17 +12,29 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	//@Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP inválido. Use o formato 99999-999.")
 	private String cep;
+
+	//@NotBlank(message = "Logradouro é obrigatório.")
 	private String logradouro;
+
+	//@Positive(message = "Número deve ser maior que zero.")
 	private Integer numero;
+
 	private String complemento;
-	private String unidade;
+
+	//@NotBlank(message = "Bairro é obrigatório.")
 	private String bairro;
+
+	//@NotBlank(message = "Localidade é obrigatória.")
 	private String localidade;
+
+	//@NotBlank(message = "UF é obrigatória.")
+	//@Size(min = 2, max = 2, message = "UF deve ter 2 caracteres.")
 	private String uf;
+
+	//@NotBlank(message = "Estado é obrigatório.")
 	private String estado;
-
-
 
 	//TODO construtor do endereço
 
@@ -34,7 +46,6 @@ public class Endereco {
 				", logradouro='" + logradouro + '\'' +
 				", numero='" + numero + '\'' +
 				", complemento='" + complemento + '\'' +
-				", unidade='" + unidade + '\'' +
 				", bairro='" + bairro + '\'' +
 				", localidade='" + localidade + '\'' +
 				", uf='" + uf + '\'' +
@@ -80,14 +91,6 @@ public class Endereco {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
-	}
-
-	public String getUnidade() {
-		return unidade;
-	}
-
-	public void setUnidade(String unidade) {
-		this.unidade = unidade;
 	}
 
 	public String getBairro() {

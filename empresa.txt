@@ -1,2 +1,0 @@
-1;Empresa 1;Empresa 1 Ltda;Emp 1;J;12345678000199;contato@empresa1.com;11999999999;Rua A;100;São Paulo;SP;01001000
-2;Empresa 2;Empresa 2 SA;Emp 2;J;98765432000188;contato@empresa2.com;11988888888;Rua B;200;Rio de Janeiro;RJ;20020000

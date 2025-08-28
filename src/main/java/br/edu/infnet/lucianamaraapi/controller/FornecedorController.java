@@ -2,10 +2,13 @@ package br.edu.infnet.lucianamaraapi.controller;
 
 import br.edu.infnet.lucianamaraapi.model.domain.Fornecedor;
 import br.edu.infnet.lucianamaraapi.model.service.FornecedorService;
-import org.springframework.web.bind.annotation.*;
 import br.edu.infnet.lucianamaraapi.model.dto.FornecedorFinanceiroDTO;
 import br.edu.infnet.lucianamaraapi.model.domain.Financeiro;
 import br.edu.infnet.lucianamaraapi.model.service.FinanceiroService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,82 +27,92 @@ public class FornecedorController {
 	}
 
 	@PostMapping
-	public Fornecedor incluir(@RequestBody Fornecedor fornecedor) {
-		return fornecedorService.incluir(fornecedor);
+	public ResponseEntity<Fornecedor> incluir(@RequestBody Fornecedor fornecedor) {
+		Fornecedor novo = fornecedorService.incluir(fornecedor);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novo);
 	}
 
 	@PutMapping("/{id}")
-	public Fornecedor alterar(@PathVariable Integer id, @RequestBody Fornecedor fornecedor) {
-		return fornecedorService.alterar(id, fornecedor);
+	public ResponseEntity<Fornecedor> alterar(@PathVariable Integer id, @RequestBody Fornecedor fornecedor) {
+		Fornecedor alterado = fornecedorService.alterar(id, fornecedor);
+		return ResponseEntity.ok(alterado);
 	}
 
 	@DeleteMapping("/{id}")
-	public void excluir(@PathVariable Integer id) {
+	public ResponseEntity<Void> excluir(@PathVariable Integer id) {
 		fornecedorService.excluir(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping
-	public List<Fornecedor> listarTodos() {
-		return fornecedorService.listarTodos();
+	public ResponseEntity<List<Fornecedor>> listarTodos() {
+		List<Fornecedor> lista = fornecedorService.listarTodos();
+		if (lista.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(lista);
 	}
 
 	@GetMapping("/{id}")
-	public Fornecedor buscarPorId(@PathVariable Integer id) {
-		return fornecedorService.buscarPorId(id);
+	public ResponseEntity<Fornecedor> buscarPorId(@PathVariable Integer id) {
+		Fornecedor fornecedor = fornecedorService.buscarPorId(id);
+		return ResponseEntity.ok(fornecedor);
 	}
 
 	@PatchMapping("/{id}/atualizarsaldodevedor")
-	public Fornecedor atualizarSaldo(@PathVariable Integer id,
-									 @RequestParam double valor) {
+	public ResponseEntity<Fornecedor> atualizarSaldo(@PathVariable Integer id,
+													 @RequestParam double valor) {
 		Fornecedor fornecedor = fornecedorService.buscarPorId(id);
-		return fornecedorService.atualizarSaldoDevedor(fornecedor, valor);
+		Fornecedor atualizado = fornecedorService.atualizarSaldoDevedor(fornecedor, valor);
+		return ResponseEntity.ok(atualizado);
 	}
 
-	// Retorna apenas o saldo devedor do fornecedor
 	@GetMapping("/{id}/saldo")
-	public double consultarSaldo(@PathVariable Integer id) {
+	public ResponseEntity<Double> consultarSaldo(@PathVariable Integer id) {
 		Fornecedor fornecedor = fornecedorService.buscarPorId(id);
-		return fornecedor.getSaldoDevedor();
+		return ResponseEntity.ok(fornecedor.getSaldoDevedor());
 	}
 
 	@GetMapping("/{id}/financeiros")
-	public FornecedorFinanceiroDTO consultarFinanceirosFornecedor(@PathVariable Integer id) {
+	public ResponseEntity<FornecedorFinanceiroDTO> consultarFinanceirosFornecedor(@PathVariable Integer id) {
 		Fornecedor fornecedor = fornecedorService.buscarPorId(id);
 
 		List<Financeiro> financeirosDoFornecedor = financeiroService.listarTodos().stream()
 				.filter(financeiro ->
-						financeiro.getfornecedor() != null && financeiro.getfornecedor().getId().equals(id)
+						financeiro.getFornecedor() != null && financeiro.getFornecedor().getId().equals(id)
 				)
 				.collect(Collectors.toList());
 
-		return new FornecedorFinanceiroDTO(
+		FornecedorFinanceiroDTO dto = new FornecedorFinanceiroDTO(
 				fornecedor.getId(),
 				fornecedor.getNome(),
 				fornecedor.getSaldoDevedor(),
 				financeirosDoFornecedor,
-				null // aqui deixamos null porque este endpoint NÃO agrupa por categoria
+				null
 		);
+		return ResponseEntity.ok(dto);
 	}
 
 	@GetMapping("/{id}/financeiros/categorias")
-	public FornecedorFinanceiroDTO consultarFinanceirosFornecedorPorCategoria(@PathVariable Integer id) {
+	public ResponseEntity<FornecedorFinanceiroDTO> consultarFinanceirosFornecedorPorCategoria(@PathVariable Integer id) {
 		Fornecedor fornecedor = fornecedorService.buscarPorId(id);
 
 		List<Financeiro> financeirosDoFornecedor = financeiroService.listarTodos().stream()
 				.filter(financeiro ->
-						financeiro.getfornecedor() != null && financeiro.getfornecedor().getId().equals(id)
+						financeiro.getFornecedor() != null && financeiro.getFornecedor().getId().equals(id)
 				)
 				.collect(Collectors.toList());
 
-		// Agrupa os financeiros por categoria/natureza
 		Map<String, List<Financeiro>> financeirosPorCategoria = financeirosDoFornecedor.stream()
 				.collect(Collectors.groupingBy(Financeiro::getNatureza));
 
-		return new FornecedorFinanceiroDTO(
+		FornecedorFinanceiroDTO dto = new FornecedorFinanceiroDTO(
 				fornecedor.getId(),
 				fornecedor.getNome(),
 				fornecedor.getSaldoDevedor(),
 				null,
 				financeirosPorCategoria
 		);
-	}}
+		return ResponseEntity.ok(dto);
+	}
+}

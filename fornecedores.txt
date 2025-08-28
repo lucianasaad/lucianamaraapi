@@ -1,2 +1,3 @@
-1;Energia Ltda;J;12345678000199;contato@energia.com;11988888888;Energia;www.energia.com;Carlos Silva;Rua B;200;São Paulo;SP;01002000
-2;Fornecedor 2;J;11111178000199;fornecedor2@teste.com;11988888888;Salarios;www.teste.com;João Jose;Rua B;200;São Paulo;SP;01002000
+1;Energia Ltda;JURIDICA;12345678000199;energia@email.com;11988888888;Energia;www.energia.com;Carlos Silva;Rua B;200;São Paulo;SP;01002000
+2;Fornecedor Escritório;JURIDICA;11111178000199;fornecescritorio@email.com;11977777777;Serviços;www.escritorio.com;João Jose;Rua C;300;São Paulo;SP;01003000
+3;Fornecedor TI;JURIDICA;22222222000155;tiservice@email.com;11966666666;TI;www.ti.com;Pedro Silva;Rua D;400;São Paulo;SP;01004000

@@ -1,10 +1,16 @@
 package br.edu.infnet.lucianamaraapi;
 
-import br.edu.infnet.lucianamaraapi.model.domain.Empresa;
 import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
-import br.edu.infnet.lucianamaraapi.model.domain.Fornecedor;
+import br.edu.infnet.lucianamaraapi.model.domain.Empresa;
 import br.edu.infnet.lucianamaraapi.model.domain.Financeiro;
+import br.edu.infnet.lucianamaraapi.model.domain.Fornecedor;
+import br.edu.infnet.lucianamaraapi.model.domain.exceptions.ClienteNaoEncontradoException;
+import br.edu.infnet.lucianamaraapi.model.domain.exceptions.EmpresaNaoEncontradaException;
+import br.edu.infnet.lucianamaraapi.model.domain.exceptions.FornecedorNaoEncontradoException;
+import br.edu.infnet.lucianamaraapi.model.service.ClienteService;
+import br.edu.infnet.lucianamaraapi.model.service.EmpresaService;
 import br.edu.infnet.lucianamaraapi.model.service.FinanceiroService;
+import br.edu.infnet.lucianamaraapi.model.service.FornecedorService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -17,9 +23,19 @@ import java.time.LocalDate;
 public class FinanceiroLoader implements ApplicationRunner {
 
 	private final FinanceiroService financeiroService;
+	private final EmpresaService empresaService;
+	private final ClienteService clienteService;
+	private final FornecedorService fornecedorService;
 
-	public FinanceiroLoader(FinanceiroService financeiroService) {
+	public FinanceiroLoader(
+			FinanceiroService financeiroService,
+			EmpresaService empresaService,
+			ClienteService clienteService,
+			FornecedorService fornecedorService)  {
 		this.financeiroService = financeiroService;
+		this.empresaService = empresaService;
+		this.clienteService = clienteService;
+		this.fornecedorService = fornecedorService;
 	}
 
 	@Override
@@ -36,36 +52,55 @@ public class FinanceiroLoader implements ApplicationRunner {
 
 			String[] campos = linha.split(";");
 
+			if (campos.length < 9) {
+				System.err.println("[ERRO] Linha inválida ou incompleta: " + linha);
+				linha = leitura.readLine();
+				continue;
+			}
+
 			Financeiro financeiro = new Financeiro();
 
-			Empresa empresa = new Empresa();
-			empresa.setId(Integer.valueOf(campos[0]));
-			empresa.setNome(campos[1]);
-			financeiro.setEmpresa(empresa);
-
-			financeiro.setNatureza(campos[2]);
-			financeiro.setTipoFinanceiro(Financeiro.TipoFinanceiro.fromCodigo(Integer.parseInt(campos[5])));
-			financeiro.setValor(Double.valueOf(campos[6]));
-			financeiro.setDataLancamento(LocalDate.parse(campos[7]));
-			financeiro.setDataVencimento(LocalDate.parse(campos[8]));
-
-			if (Integer.parseInt(campos[5]) < 0) { // Pagamento: Fornecedor
-				Fornecedor fornecedor = new Fornecedor();
-				fornecedor.setId(Integer.valueOf(campos[3]));
-				fornecedor.setNome(campos[4]);
-				financeiro.setFornecedor(fornecedor);
-			} else { // Recebimento: Cliente
-				Cliente cliente = new Cliente();
-				cliente.setId(Integer.valueOf(campos[3]));
-				cliente.setNome(campos[4]);
-				financeiro.setCliente(cliente);
+			try {
+				Empresa empresa = empresaService.buscarPorDocumento(campos[0]);
+				financeiro.setEmpresa(empresa);
+			} catch (EmpresaNaoEncontradaException e) {
+				System.err.println("[ERRO] " + e.getMessage() + " - linha será ignorada.");
+				linha = leitura.readLine();
+				continue;
 			}
 
-			if (campos[9] != null && !campos[9].isEmpty()) {
-				financeiro.setDataBaixa(LocalDate.parse(campos[9]));
+			String documentoPessoa = campos[8]; // Cliente ou Fornecedor (BUSCAR PELO DOCUMENTO)
+			int tipoFinanceiroCodigo = Integer.parseInt(campos[2]); // TipoFinanceiro
+			if (tipoFinanceiroCodigo < 0) {
+				try {
+					Fornecedor fornecedor = fornecedorService.buscarPorDocumento(documentoPessoa);
+					financeiro.setFornecedor(fornecedor);
+				} catch (FornecedorNaoEncontradoException e) {
+					System.err.println("[ERRO] " + e.getMessage() + " - linha será ignorada.");
+					linha = leitura.readLine();
+					continue; // pula para a próxima linha
+				}
+			} else {
+				try {
+					Cliente cliente = clienteService.buscarPorDocumento(documentoPessoa);
+					financeiro.setCliente(cliente);
+				} catch (ClienteNaoEncontradoException e) {
+					System.err.println("[ERRO] " + e.getMessage() + " - linha será ignorada.");
+					linha = leitura.readLine();
+					continue;
+				}
 			}
 
-			financeiro.setStatus(Financeiro.StatusFinanceiro.fromCodigo(campos[10].charAt(0)));
+			financeiro.setNatureza(campos[1]); // Natureza
+			financeiro.setTipoFinanceiro(Financeiro.TipoFinanceiro.fromCodigo(tipoFinanceiroCodigo));
+			financeiro.setValor(Double.parseDouble(campos[3])); // Valor
+			// Datas
+			financeiro.setDataLancamento(LocalDate.parse(campos[4]));
+			financeiro.setDataVencimento(LocalDate.parse(campos[5]));
+			if (campos[6] != null && !campos[6].isBlank()) {
+				financeiro.setDataBaixa(LocalDate.parse(campos[6]));
+			}
+			financeiro.setStatus(Financeiro.StatusFinanceiro.fromCodigo(campos[7].charAt(0))); // Status
 
 			try {
 				financeiroService.incluir(financeiro);
@@ -85,4 +120,5 @@ public class FinanceiroLoader implements ApplicationRunner {
 		leitura.close();
 
 	}
+
 }

@@ -1,99 +1,90 @@
 package br.edu.infnet.lucianamaraapi.model.service;
 
-import br.edu.infnet.lucianamaraapi.model.domain.Cliente;
 import br.edu.infnet.lucianamaraapi.model.domain.Fornecedor;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.FornecedorInvalidoException;
 import br.edu.infnet.lucianamaraapi.model.domain.exceptions.FornecedorNaoEncontradoException;
+import br.edu.infnet.lucianamaraapi.model.repository.FornecedorRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class FornecedorService implements CrudService<Fornecedor, Integer> {
 
-	private final Map<Integer, Fornecedor> mapa = new ConcurrentHashMap<>();
-	private final AtomicInteger nextId = new AtomicInteger(1);
+	private final FornecedorRepository fornecedorRepository;
+
+	public FornecedorService(FornecedorRepository fornecedorRepository) {
+		this.fornecedorRepository = fornecedorRepository;
+	}
 
 	private void validar(Fornecedor fornecedor) {
 		if (fornecedor == null) {
-			throw new IllegalArgumentException("O fornecedor não pode estar nulo!");
+			throw new IllegalArgumentException("O fornecedor não pode ser nulo!");
 		}
-
 		if (fornecedor.getNome() == null || fornecedor.getNome().trim().isEmpty()) {
 			throw new FornecedorInvalidoException("O nome do fornecedor deve ser informado!");
 		}
 	}
 
 	@Override
+	@Transactional
 	public Fornecedor incluir(Fornecedor fornecedor) {
-
 		validar(fornecedor);
-
 		if (fornecedor.getId() != null && fornecedor.getId() != 0) {
-			throw new IllegalArgumentException("Um novo Fornecedor não pode ter um ID na inclusão!");
+			throw new IllegalArgumentException("Um novo Fornecedor não pode ter ID definido!");
 		}
-
-		fornecedor.setId(nextId.getAndIncrement());
-		mapa.put(fornecedor.getId(), fornecedor);
-
-		return fornecedor;
+		return fornecedorRepository.save(fornecedor);
 	}
 
 	@Override
+	@Transactional
 	public Fornecedor alterar(Integer id, Fornecedor fornecedor) {
-
-		if (id == null || id == 0) {
-			throw new IllegalArgumentException("O ID para alteração não pode ser nulo/zero!");
+		if (id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID para alteração não pode ser nulo ou zero!");
 		}
-
 		validar(fornecedor);
 		buscarPorId(id);
-
 		fornecedor.setId(id);
-		mapa.put(fornecedor.getId(), fornecedor);
-
-		return fornecedor;
+		return fornecedorRepository.save(fornecedor);
 	}
 
 	@Override
+	@Transactional
 	public void excluir(Integer id) {
-		if (id == null || id == 0) {
-			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo/zero!");
-		}
-
-		if (!mapa.containsKey(id)) {
-			throw new FornecedorNaoEncontradoException("O Fornecedor com ID " + id + " não foi encontrado!");
-		}
-
-		mapa.remove(id);
+		Fornecedor fornecedor = buscarPorId(id);
+		fornecedorRepository.delete(fornecedor);
 	}
 
 	@Override
 	public List<Fornecedor> listarTodos() {
-		return new ArrayList<>(mapa.values());
+		return fornecedorRepository.findAll();
 	}
 
 	@Override
 	public Fornecedor buscarPorId(Integer id) {
-		Fornecedor fornecedor = mapa.get(id);
-
-		if (fornecedor == null) {
-			throw new FornecedorNaoEncontradoException("Fornecedor ID " + id + " não encontrado!");
+		if (id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID não pode ser nulo/zero!");
 		}
-
-		return fornecedor;
+		return fornecedorRepository.findById(id)
+				.orElseThrow(() -> new FornecedorNaoEncontradoException("Fornecedor com ID " + id + " não encontrado!"));
 	}
 
+	@Transactional
 	public Fornecedor atualizarSaldoDevedor(Fornecedor fornecedor, double valor) {
+		if (fornecedor == null) {
+			throw new IllegalArgumentException("O fornecedor não pode ser nulo!");
+		}
 
 		double saldoAtual = fornecedor.getSaldoDevedor() != 0 ? fornecedor.getSaldoDevedor() : 0.0;
-		fornecedor.setSaldoDevedor(saldoAtual + (valor));
-		alterar(fornecedor.getId(), fornecedor);
-		return fornecedor;
+		fornecedor.setSaldoDevedor(saldoAtual + valor);
+		return fornecedorRepository.save(fornecedor);
+	}
+
+	@Transactional
+	public Fornecedor buscarPorDocumento(String documento) {
+		return fornecedorRepository.findByDocumento(documento)
+				.orElseThrow(() -> new FornecedorNaoEncontradoException("Fornecedor com documento " + documento + " não encontrado!"));
 	}
 
 }

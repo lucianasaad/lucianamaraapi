@@ -1,15 +1,21 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
 import jakarta.persistence.Entity;
-
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Fornecedor extends Pessoa {
 
-	private String categoria;          // Ex: Energia, Telecom, Serviços
+	@NotBlank(message = "Categoria é obrigatória.")
+	private String categoria;
+
+	//@URL(message = "Formato de site inválido.")
 	private String site;
+
 	private String contatoResponsavel;
+
+	@PositiveOrZero(message = "Saldo devedor não pode ser negativo.")
 	private double saldoDevedor;
 
 	@Override

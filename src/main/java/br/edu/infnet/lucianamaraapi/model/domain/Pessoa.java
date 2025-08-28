@@ -1,16 +1,21 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-import jakarta.persistence.*;
-//import jakarta.validation.constraints.Email;
-//import jakarta.validation.constraints.NotBlank;
-//import jakarta.validation.constraints.Pattern;
-//import jakarta.validation.constraints.Size;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 
 @JsonTypeInfo(
@@ -31,56 +36,49 @@ public abstract class Pessoa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotBlank(message = "O nome é obrigatório.")
+	@Column(nullable = false, length = 100)
 	private String nome;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 10)
 	private TipoPessoa tipoPessoa;
-	private String documento; // CPF ou CNPJ
+
+	@NotBlank(message = "Documento é obrigatório (CPF ou CNPJ).")
+	@Column(unique = true, nullable = false, length = 20)
+	private String documento;
+
+	@NotBlank(message = "O e-mail é obrigatório.")
+	@Email(message = "Formato de e-mail inválido.")
+	@Column(nullable = false, length = 120)
 	private String email;
+
+	@NotBlank(message = "O telefone é obrigatório.")
+	@Pattern(regexp = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}",
+			message = "Telefone inválido. Use o formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX.")
 	private String telefone;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "endereco_id")
-//	@Valid
+	@Valid
 	private Endereco endereco;
 
 	public enum TipoPessoa {
-		FISICA("F", "Pessoa Física"),
-		JURIDICA("J", "Pessoa Jurídica");
+		FISICA("Pessoa Física"),
+		JURIDICA("Pessoa Jurídica");
 
-		private final String codigo;
 		private final String descricao;
 
-		TipoPessoa(String codigo, String descricao) {
-			this.codigo = codigo;
-			this.descricao = descricao;
-		}
-
-		@JsonValue
-		public String getCodigo() {
-			return codigo;
-		}
-
-		public String getDescricao() {
-			return descricao;
-		}
-
-		@JsonCreator
-		public static TipoPessoa fromCodigo(String codigo) {
-			for (TipoPessoa tipo : values()) {
-				if (tipo.codigo.equalsIgnoreCase(codigo) || tipo.name().equalsIgnoreCase(codigo)) {
-					return tipo;
-				}
-			}
-			throw new IllegalArgumentException("Código inválido: " + codigo);
-		}
+		TipoPessoa(String descricao) { this.descricao = descricao; }
+		public String getDescricao() { return descricao; }
 	}
+
+	public abstract String obterTipo();
 
 	@Override
 	public String toString() {
-
-			return String.format("%d - %s - %s - %s - %s", id, nome, documento, email, endereco);
-		}
-
-	public abstract String obterTipo();
+		return String.format("%d - %s - %s - %s - %s - %s", id, nome, documento, email, telefone, endereco);
+	}
 
 	public Integer getId() {
 		return id;

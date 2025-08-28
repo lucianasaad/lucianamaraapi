@@ -1,18 +1,29 @@
 package br.edu.infnet.lucianamaraapi.model.domain;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 
 @Entity
 public class Cliente extends Pessoa {
 
+	@Min(value = 0, message = "Média de atraso não pode ser negativa.")
 	private int mediaAtraso;
+
+	@PositiveOrZero(message = "Saldo a receber não pode ser negativo.")
 	private double saldoReceber;
+
 	private LocalDate dataProxVencimento;
+
 	private boolean ativo;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "endereco_cobranca_id")
 	private Endereco enderecoCobranca;
 

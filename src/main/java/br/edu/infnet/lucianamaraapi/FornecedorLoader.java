@@ -4,34 +4,36 @@ import br.edu.infnet.lucianamaraapi.model.domain.Endereco;
 import br.edu.infnet.lucianamaraapi.model.domain.Fornecedor;
 import br.edu.infnet.lucianamaraapi.model.domain.Pessoa;
 import br.edu.infnet.lucianamaraapi.model.service.FornecedorService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(2)
 public class FornecedorLoader extends PessoaLoader<Fornecedor> {
 
 	public FornecedorLoader(FornecedorService fornecedorService) {
 		super(
 				"fornecedores.txt", // arquivo
 				campos -> { // conversor
-					Fornecedor f = new Fornecedor();
-					f.setNome(campos[1]);
-					f.setTipoPessoa(Pessoa.TipoPessoa.fromCodigo(campos[2]));
-					f.setDocumento(campos[3]);
-					f.setEmail(campos[4]);
-					f.setTelefone(campos[5]);
-					f.setCategoria(campos[6]);
-					f.setSite(campos[7]);
-					f.setContatoResponsavel(campos[8]);
+					Fornecedor fornecedor = new Fornecedor();
+					fornecedor.setNome(campos[1]);
+					fornecedor.setTipoPessoa(Pessoa.TipoPessoa.valueOf(campos[2].trim().toUpperCase()));
+					fornecedor.setDocumento(campos[3]);
+					fornecedor.setEmail(campos[4]);
+					fornecedor.setTelefone(campos[5]);
+					fornecedor.setCategoria(campos[6]);
+					fornecedor.setSite(campos[7]);
+					fornecedor.setContatoResponsavel(campos[8]);
 
-					Endereco end = new Endereco();
-					end.setLogradouro(campos[9]);
-					end.setNumero(Integer.valueOf(campos[10]));
-					end.setLocalidade(campos[11]);
-					end.setUf(campos[12]);
-					end.setCep(campos[13]);
-					f.setEndereco(end);
+					Endereco endereco = new Endereco();
+					endereco.setLogradouro(campos[9]);
+					endereco.setNumero(Integer.valueOf(campos[10]));
+					endereco.setLocalidade(campos[11]);
+					endereco.setUf(campos[12]);
+					endereco.setCep(campos[13]);
+					fornecedor.setEndereco(endereco);
 
-					return f;
+					return fornecedor;
 				},
 				f -> { // serviceInserir com try/catch
 					try {

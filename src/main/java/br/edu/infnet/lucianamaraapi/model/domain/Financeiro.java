@@ -25,6 +25,10 @@ public class Financeiro {
 	@JoinColumn(name = "fornecedor_id", nullable = true)
 	private Fornecedor fornecedor;
 
+	@ManyToOne
+	@JoinColumn(name = "conta_bancaria_id")
+	private ContaBancaria contaBancaria;
+
 	private TipoFinanceiro tipoFinanceiro;
 	private double valor;
 	private LocalDate dataLancamento;
@@ -98,24 +102,31 @@ public class Financeiro {
 
 	@Override
 	public String toString() {
+		String empresaId = (empresa != null && empresa.getId() != null) ? empresa.getId().toString() : "N/A";
+		String nomeCliente = (cliente != null && cliente.getNome() != null) ? cliente.getNome() : "N/A";
+		String nomeFornecedor = (fornecedor != null && fornecedor.getNome() != null) ? fornecedor.getNome() : "N/A";
 
-		String empresa_id = (empresa != null && empresa.getId() != null) ? empresa.getId().toString() : "N/A";
-		String nomeCliente = (cliente != null && cliente.getId() != null) ? cliente.getNome().toString() : "N/A";
-		String nomeFornecedor = (fornecedor != null && fornecedor.getId() != null) ? fornecedor.getNome().toString() : "N/A";
+		String contaDescricao = "N/A";
+		if (contaBancaria != null) {
+			String bancoNome = (contaBancaria.getBanco() != null) ? contaBancaria.getBanco().getNome() : "Banco N/A";
+			contaDescricao = bancoNome + " - Ag." + contaBancaria.getAgencia() +
+					" Conta " + contaBancaria.getNumeroConta();
+		}
 
 		return "Financeiro{" +
-					"id=" + id +
-					", empresa='" + empresa_id + '\'' +
-					", natureza='" + (natureza != null ? natureza : "N/A") + '\'' +
-					", cliente='" + nomeCliente + '\'' +
-					", fornecedor='" + nomeFornecedor + '\'' +
-					", tipoFinanceiro=" + (tipoFinanceiro != null ? tipoFinanceiro.name() : "N/A") +
-					", valor=" + valor +
-					", dataLancamento=" + (dataLancamento != null ? dataLancamento : "N/A") +
-					", dataVencimento=" + (dataVencimento != null ? dataVencimento : "N/A") +
-					", dataBaixa=" + (dataBaixa != null ? dataBaixa : "N/A") +
-					", status=" + (status != null ? status.name() : "N/A") +
-					'}';
+				"id=" + id +
+				", empresa=" + empresaId +
+				", natureza='" + natureza + '\'' +
+				", cliente='" + nomeCliente + '\'' +
+				", fornecedor='" + nomeFornecedor + '\'' +
+				", tipoFinanceiro=" + (tipoFinanceiro != null ? tipoFinanceiro.name() : "N/A") +
+				", valor=" + valor +
+				", dataLancamento=" + (dataLancamento != null ? dataLancamento : "N/A") +
+				", dataVencimento=" + (dataVencimento != null ? dataVencimento : "N/A") +
+				", dataBaixa=" + (dataBaixa != null ? dataBaixa : "N/A") +
+				", status=" + (status != null ? status.name() : "N/A") +
+				", contaBancaria='" + contaDescricao + '\'' +
+				'}';
 	}
 
 	// Getters e setters
@@ -215,6 +226,14 @@ public class Financeiro {
 	public void baixarFinanceiro() {
 		this.setDataBaixa(LocalDate.now());
 		this.setStatus(StatusFinanceiro.BAIXADO);
+	}
+
+	public ContaBancaria getContaBancaria() {
+		return contaBancaria;
+	}
+
+	public void setContaBancaria(ContaBancaria contaBancaria) {
+		this.contaBancaria = contaBancaria;
 	}
 
 }
